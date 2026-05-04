@@ -1,49 +1,46 @@
 const Crypto = require('../models/Crypto');
 
-exports.getAllCryptos = async (req, res) => {
+const getAllCrypto = async (_req, res) => {
   try {
-    const cryptos = await Crypto.find().sort({ name: 1 });
-    res.json({ success: true, data: cryptos });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Unable to load cryptocurrencies', error: error.message });
+    const coins = await Crypto.find().sort({ createdAt: -1 });
+    res.json({ coins });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-exports.getTopGainers = async (req, res) => {
+const getGainers = async (_req, res) => {
   try {
-    const gainers = await Crypto.find().sort({ change24h: -1 }).limit(20);
-    res.json({ success: true, data: gainers });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Unable to load top gainers', error: error.message });
+    const coins = await Crypto.find({ change24h: { $gt: 0 } }).sort({ change24h: -1 });
+    res.json({ coins });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-exports.getNewListings = async (req, res) => {
+const getNewListings = async (_req, res) => {
   try {
-    const listings = await Crypto.find().sort({ createdAt: -1 }).limit(20);
-    res.json({ success: true, data: listings });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Unable to load new listings', error: error.message });
+    const coins = await Crypto.find().sort({ createdAt: -1 }).limit(20);
+    res.json({ coins });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-exports.createCrypto = async (req, res) => {
+const addCrypto = async (req, res) => {
   try {
     const { name, symbol, price, image, change24h } = req.body;
-    if (!name || !symbol || price == null || !image || change24h == null) {
-      return res.status(400).json({ success: false, message: 'All fields are required: name, symbol, price, image, change24h' });
+
+    const existing = await Crypto.findOne({ symbol: symbol.toUpperCase() });
+    if (existing) {
+      return res.status(409).json({ message: `${symbol.toUpperCase()} already exists` });
     }
 
-    const crypto = await Crypto.create({
-      name,
-      symbol,
-      price,
-      image,
-      change24h,
-    });
-
-    res.status(201).json({ success: true, message: 'Cryptocurrency created successfully', data: crypto });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Unable to create cryptocurrency', error: error.message });
+    const coin = await Crypto.create({ name, symbol, price, image, change24h });
+    res.status(201).json({ message: 'Cryptocurrency added successfully', coin });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
+
+module.exports = { getAllCrypto, getGainers, getNewListings, addCrypto };
