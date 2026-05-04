@@ -1,7 +1,0 @@
-[build]
-  command = "npm run build"
-  publish = "dist"
-
-# Ensure the frontend is built from the `frontend` directory and the static site is published from `dist`.
-# Set VITE_API_BASE_URL in Netlify environment variables to your deployed backend base URL.
-# Example: VITE_API_BASE_URL=https://interim-assesment-mike-773-1.onrender.com/api
