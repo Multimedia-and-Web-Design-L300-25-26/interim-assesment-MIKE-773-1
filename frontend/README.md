@@ -1,4 +1,4 @@
-# Coinbase Clone Frontend
+# Crypto App Frontend
 
 This frontend is a Vite + React application wired to the backend API.
 
@@ -36,3 +36,4 @@ The frontend proxies API requests under `/api` to the backend running on `http:/
 
 - The app uses `credentials: 'include'` for cookies so the JWT is stored in an HTTP-only cookie.
 - Use the backend server at `http://localhost:5000` when running locally.
+- For Netlify deployment, ensure the site is built from the `frontend` folder and that the backend URL is configured with `VITE_API_BASE_URL` if the backend is hosted separately.

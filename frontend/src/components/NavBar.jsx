@@ -11,7 +11,7 @@ function NavBar() {
 
   return (
     <header className="navbar">
-      <div className="brand">Coinbase Clone</div>
+      <div className="brand">Crypto App</div>
       <nav>
         <Link to="/">Home</Link>
         <Link to="/profile">Profile</Link>
