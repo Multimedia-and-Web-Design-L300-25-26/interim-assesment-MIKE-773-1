@@ -84,6 +84,62 @@ This repository contains both the backend API and frontend application:
    npm run dev
    ```
 
+## Deployment Instructions
+
+### Backend Deployment (Render)
+
+1. **Create a Render account** at [render.com](https://render.com)
+2. **Connect your GitHub repository**
+3. **Create a new Web Service**:
+   - **Service Type**: Web Service
+   - **Repository**: `Multimedia-and-Web-Design-L300-25-26/interim-assesment-MIKE-773-1`
+   - **Branch**: `main`
+   - **Root Directory**: Leave empty (backend is in root)
+   - **Runtime**: Node
+   - **Build Command**: `npm install`
+   - **Start Command**: `npm start`
+
+4. **Set Environment Variables**:
+   - `NODE_ENV`: `production`
+   - `JWT_SECRET`: Generate a secure random string
+   - `MONGO_URI`: Your MongoDB Atlas connection string
+   - `CLIENT_URL`: Your Netlify frontend URL (e.g., `https://your-app-name.netlify.app`)
+
+5. **Deploy** - Render will build and deploy your backend
+
+### Frontend Deployment (Netlify)
+
+1. **Create a Netlify account** at [netlify.com](https://netlify.com)
+2. **Connect your GitHub repository**
+3. **Deploy settings**:
+   - **Base directory**: `frontend`
+   - **Build command**: `npm install && npm run build`
+   - **Publish directory**: `frontend/dist`
+
+4. **Set Environment Variable** (after backend is deployed):
+   - `VITE_API_BASE_URL`: Your Render backend URL + `/api` (e.g., `https://your-backend.onrender.com/api`)
+
+5. **Deploy** - Netlify will build and deploy your frontend
+
+### Database Setup (MongoDB Atlas)
+
+1. **Create MongoDB Atlas account** at [mongodb.com/atlas](https://mongodb.com/atlas)
+2. **Create a free cluster**
+3. **Create database user** with read/write permissions
+4. **Whitelist your IP** (or 0.0.0.0/0 for all IPs)
+5. **Get connection string** and update `MONGO_URI` in Render
+
+### Post-Deployment Checklist
+
+- ✅ Backend deployed on Render
+- ✅ Frontend deployed on Netlify
+- ✅ MongoDB Atlas database connected
+- ✅ Environment variables configured
+- ✅ CORS configured for frontend domain
+- ✅ Frontend `VITE_API_BASE_URL` points to backend
+- ✅ Test login/register functionality
+- ✅ Test crypto data endpoints
+
 ## Environment Variables
 
 Create a `.env` file in the backend directory with:

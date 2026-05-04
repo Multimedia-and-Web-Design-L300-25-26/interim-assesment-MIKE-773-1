@@ -18,7 +18,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || true,
+    origin: process.env.CLIENT_URL || process.env.NODE_ENV === 'production' 
+      ? false  // Let browser handle CORS in production
+      : true,  // Allow all in development
     credentials: true,
   })
 );
