@@ -246,11 +246,21 @@ button {
   font-weight: 700;
 }
 
-.error-message {
-  background: #fee2e2;
-  color: #991b1b;
+.info-message {
+  background: #dbeafe;
+  color: #1e40af;
   padding: 0.85rem 1rem;
   border-radius: 0.75rem;
+  border: 1px solid #bfdbfe;
+}
+
+.loading-message {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.85rem 1rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  font-weight: 500;
 }
 
 .success-message {

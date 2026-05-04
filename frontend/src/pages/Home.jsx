@@ -2,31 +2,74 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCryptos, getGainers, getNewListings } from '../api/crypto.js';
 
+// Mock data for when backend is not available
+const mockCryptos = [
+  { _id: '1', name: 'Bitcoin', symbol: 'BTC', price: 45000, change24h: 2.5 },
+  { _id: '2', name: 'Ethereum', symbol: 'ETH', price: 2800, change24h: -1.2 },
+  { _id: '3', name: 'Binance Coin', symbol: 'BNB', price: 320, change24h: 0.8 },
+  { _id: '4', name: 'Cardano', symbol: 'ADA', price: 0.45, change24h: 3.1 },
+  { _id: '5', name: 'Solana', symbol: 'SOL', price: 95, change24h: -0.5 },
+  { _id: '6', name: 'Polkadot', symbol: 'DOT', price: 8.20, change24h: 1.7 }
+];
+
+const mockGainers = [
+  { _id: '4', name: 'Cardano', symbol: 'ADA', change24h: 3.1 },
+  { _id: '1', name: 'Bitcoin', symbol: 'BTC', change24h: 2.5 },
+  { _id: '6', name: 'Polkadot', symbol: 'DOT', change24h: 1.7 },
+  { _id: '3', name: 'Binance Coin', symbol: 'BNB', change24h: 0.8 },
+  { _id: '5', name: 'Solana', symbol: 'SOL', change24h: -0.5 },
+  { _id: '2', name: 'Ethereum', symbol: 'ETH', change24h: -1.2 }
+];
+
+const mockNewListings = [
+  { _id: '6', name: 'Polkadot', symbol: 'DOT', createdAt: new Date().toISOString() },
+  { _id: '5', name: 'Solana', symbol: 'SOL', createdAt: new Date(Date.now() - 86400000).toISOString() },
+  { _id: '4', name: 'Cardano', symbol: 'ADA', createdAt: new Date(Date.now() - 172800000).toISOString() },
+  { _id: '3', name: 'Binance Coin', symbol: 'BNB', createdAt: new Date(Date.now() - 259200000).toISOString() },
+  { _id: '2', name: 'Ethereum', symbol: 'ETH', createdAt: new Date(Date.now() - 345600000).toISOString() },
+  { _id: '1', name: 'Bitcoin', symbol: 'BTC', createdAt: new Date(Date.now() - 432000000).toISOString() }
+];
+
 function Home() {
   const [cryptos, setCryptos] = useState([]);
   const [gainers, setGainers] = useState([]);
   const [newListings, setNewListings] = useState([]);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       try {
+        setIsLoading(true);
         const [cryptoRes, gainersRes, newRes] = await Promise.all([
           getCryptos(),
           getGainers(),
           getNewListings(),
         ]);
 
-        if (!cryptoRes.success || !gainersRes.success || !newRes.success) {
-          setError('Unable to fetch crypto data.');
-          return;
+        // Check if all responses are successful
+        if (cryptoRes.success && gainersRes.success && newRes.success) {
+          setCryptos(cryptoRes.data);
+          setGainers(gainersRes.data);
+          setNewListings(newRes.data);
+          setError('');
+        } else {
+          // If backend is not available, use mock data
+          console.log('Backend not available, using mock data');
+          setCryptos(mockCryptos);
+          setGainers(mockGainers);
+          setNewListings(mockNewListings);
+          setError('Demo mode: Using sample data. Backend not connected.');
         }
-
-        setCryptos(cryptoRes.data);
-        setGainers(gainersRes.data);
-        setNewListings(newRes.data);
       } catch (err) {
-        setError('Unable to fetch crypto data.');
+        console.log('API error, using mock data:', err);
+        // Use mock data when backend is not available
+        setCryptos(mockCryptos);
+        setGainers(mockGainers);
+        setNewListings(mockNewListings);
+        setError('Demo mode: Using sample data. Backend not connected.');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -74,7 +117,8 @@ function Home() {
           </div>
           <p className="section-description">Live crypto listing, gainers, and new assets drawn from the backend API.</p>
         </div>
-        {error && <div className="error-message">{error}</div>}
+        {isLoading && <div className="loading-message">Loading crypto data...</div>}
+        {error && <div className="info-message">{error}</div>}
         <div className="grid">
           <div className="card">
             <h3>All Cryptocurrencies</h3>
