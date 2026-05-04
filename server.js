@@ -16,14 +16,16 @@ connectDB();
 
 app.use(express.json());
 app.use(cookieParser());
+const corsOrigin = process.env.CLIENT_URL || (process.env.NODE_ENV === 'production' ? false : true);
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || process.env.NODE_ENV === 'production' 
-      ? false  // Let browser handle CORS in production
-      : true,  // Allow all in development
+    origin: corsOrigin,
     credentials: true,
   })
 );
+if (process.env.NODE_ENV === 'production' && !process.env.CLIENT_URL) {
+  console.warn('Warning: CLIENT_URL is not set in production. CORS is disabled until CLIENT_URL is configured.');
+}
 
 app.get('/', (req, res) => {
   res.json({ message: 'Coinbase clone backend is running.' });

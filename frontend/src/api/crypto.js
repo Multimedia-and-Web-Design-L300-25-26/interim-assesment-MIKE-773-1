@@ -1,4 +1,10 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? '/api' : '');
+
+if (!BASE_URL) {
+  console.error(
+    'Missing VITE_API_BASE_URL in production. Set VITE_API_BASE_URL in Netlify environment variables and redeploy the frontend.'
+  );
+}
 
 const defaultOptions = {
   credentials: 'include',
