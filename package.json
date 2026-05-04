@@ -7,7 +7,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "author": "Your Name",
+  "author": "MICHAEL CHANDI THOMAS",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
