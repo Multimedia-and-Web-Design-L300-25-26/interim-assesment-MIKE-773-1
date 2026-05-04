@@ -25,7 +25,7 @@ function Login() {
     <section className="form-page">
       <h1>Login</h1>
       <div className="demo-notice">
-        Demo app – do not use your real password
+        Use a strong password for your account.
       </div>
       <form onSubmit={handleSubmit} className="form-grid">
         <label>

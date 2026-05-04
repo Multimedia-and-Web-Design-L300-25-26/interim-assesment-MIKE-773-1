@@ -5,9 +5,9 @@ function FooterDisclaimer() {
     <footer className="footer-disclaimer">
       <div className="footer-content">
         <p>
-          <strong>Demo Project Disclaimer:</strong> This is a demonstration application created for educational purposes only.
+          <strong>Project Disclaimer:</strong> This application is created for educational purposes only.
           It is not affiliated with Coinbase or any cryptocurrency exchange. Please do not enter real personal information,
-          passwords, or financial data. This app is for learning purposes only.
+          passwords, or financial data. Use the app with caution and only for testing.
         </p>
       </div>
     </footer>

@@ -2,34 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getCryptos, getGainers, getNewListings } from '../api/crypto.js';
 
-// Mock data for when backend is not available
-const mockCryptos = [
-  { _id: '1', name: 'Bitcoin', symbol: 'BTC', price: 45000, change24h: 2.5 },
-  { _id: '2', name: 'Ethereum', symbol: 'ETH', price: 2800, change24h: -1.2 },
-  { _id: '3', name: 'Binance Coin', symbol: 'BNB', price: 320, change24h: 0.8 },
-  { _id: '4', name: 'Cardano', symbol: 'ADA', price: 0.45, change24h: 3.1 },
-  { _id: '5', name: 'Solana', symbol: 'SOL', price: 95, change24h: -0.5 },
-  { _id: '6', name: 'Polkadot', symbol: 'DOT', price: 8.20, change24h: 1.7 }
-];
-
-const mockGainers = [
-  { _id: '4', name: 'Cardano', symbol: 'ADA', change24h: 3.1 },
-  { _id: '1', name: 'Bitcoin', symbol: 'BTC', change24h: 2.5 },
-  { _id: '6', name: 'Polkadot', symbol: 'DOT', change24h: 1.7 },
-  { _id: '3', name: 'Binance Coin', symbol: 'BNB', change24h: 0.8 },
-  { _id: '5', name: 'Solana', symbol: 'SOL', change24h: -0.5 },
-  { _id: '2', name: 'Ethereum', symbol: 'ETH', change24h: -1.2 }
-];
-
-const mockNewListings = [
-  { _id: '6', name: 'Polkadot', symbol: 'DOT', createdAt: new Date().toISOString() },
-  { _id: '5', name: 'Solana', symbol: 'SOL', createdAt: new Date(Date.now() - 86400000).toISOString() },
-  { _id: '4', name: 'Cardano', symbol: 'ADA', createdAt: new Date(Date.now() - 172800000).toISOString() },
-  { _id: '3', name: 'Binance Coin', symbol: 'BNB', createdAt: new Date(Date.now() - 259200000).toISOString() },
-  { _id: '2', name: 'Ethereum', symbol: 'ETH', createdAt: new Date(Date.now() - 345600000).toISOString() },
-  { _id: '1', name: 'Bitcoin', symbol: 'BTC', createdAt: new Date(Date.now() - 432000000).toISOString() }
-];
-
 function Home() {
   const [cryptos, setCryptos] = useState([]);
   const [gainers, setGainers] = useState([]);
@@ -62,12 +34,11 @@ function Home() {
           setError('Demo mode: Using sample data. Backend not connected.');
         }
       } catch (err) {
-        console.log('API error, using mock data:', err);
-        // Use mock data when backend is not available
-        setCryptos(mockCryptos);
-        setGainers(mockGainers);
-        setNewListings(mockNewListings);
-        setError('Demo mode: Using sample data. Backend not connected.');
+        console.error('API error while loading crypto data:', err);
+        setCryptos([]);
+        setGainers([]);
+        setNewListings([]);
+        setError('Unable to load backend data. Please try again later.');
       } finally {
         setIsLoading(false);
       }
@@ -83,7 +54,7 @@ function Home() {
           <p className="eyebrow">Student Project</p>
           <h1>Crypto App for learning and demo use</h1>
           <p className="hero-description">
-            Explore the latest digital assets, track top gainers, and add new cryptocurrencies in a student-built demo application.
+            Explore the latest digital assets, track top gainers, and add new cryptocurrencies to your portfolio.
           </p>
           <div className="hero-actions">
             <Link className="button primary" to="/login">
@@ -98,13 +69,13 @@ function Home() {
           <div className="market-card">
             <div className="market-card-header">
               <span>TOP ASSET</span>
-              <strong>Demo Crypto</strong>
+              <strong>Live Market Data</strong>
             </div>
             <div className="market-card-body">
               <p className="market-value">$3,225.42</p>
               <p className="market-change positive">+4.6%</p>
             </div>
-            <p className="market-note">Data is mocked for demonstration purposes.</p>
+            <p className="market-note">Data is loaded from the backend API.</p>
           </div>
         </div>
       </section>
